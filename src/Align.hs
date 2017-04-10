@@ -1,7 +1,13 @@
-module PSSP where
+module Align where
 
 type Point = (Double, Double)
 type Polyline = [Point]
+
+data Alignment = Alignment
+    { angle :: Double
+    , displacement :: Point
+    , scalar :: Double
+    }
 
 -- TODO: Align polylines using Cohen & Guibas' method (1997), then score the
 -- aligned polylines using a combination of scale and deformation distance
@@ -10,6 +16,13 @@ type Polyline = [Point]
 -- deformations as well as rigid transformations of the pattern polyline.
 partialSimilarityScore :: Polyline -> Polyline -> Double
 partialSimilarityScore pattern text = 0
+
+align :: Polyline -> Polyline -> Alignment
+align pattern text = Alignment
+    { angle = 0
+    , displacement = (0, 0)
+    , scalar = 0
+    }
 
 -- Rotate a polyline with respect to the origin.
 rotate :: Double -> Polyline -> Polyline
