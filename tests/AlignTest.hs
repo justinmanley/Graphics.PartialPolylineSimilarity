@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances, UndecidableInstances #-}
-module Main where
+module AlignTest (alignTests) where
 
-import Test.Tasty (TestTree, defaultMain, testGroup)
+import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.QuickCheck (testProperty)
 import Test.Tasty.HUnit (testCase)
 import Test.HUnit.Approx (assertApproxEqual)
@@ -9,11 +9,8 @@ import Test.HUnit.Base (Assertion)
 import Test.QuickCheck.Modifiers (Positive(..), NonEmptyList(..))
 import Align (Polyline, Point, Alignment(..), align, rotate, translate, scale, (<+>))
 
-main :: IO ()
-main = defaultMain tests
-
-tests :: TestTree
-tests = testGroup "Tests" [properties, unitTests]
+alignTests :: TestTree
+alignTests = testGroup "AlignTests" [properties, unitTests]
 
 errorMargin :: Double
 errorMargin = 0.01
