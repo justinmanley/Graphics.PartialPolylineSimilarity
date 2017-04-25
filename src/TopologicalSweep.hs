@@ -1,14 +1,11 @@
 module TopologicalSweep (Cut(..), Line(..), Arrangement(..), sweep, leftmostCut) where
 
-import Data.Stack (Stack, stackNew)
 import Data.List (sort, nub, (\\))
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Maybe (isJust, mapMaybe, fromJust, maybe)
-import Data.Function (on)
 import Prelude hiding (Either(..), lines)
 
-import HorizonTree (HorizonTreeNode(NegativeInfinity, HorizonLine), HorizonTree, initUpperHorizonTree, initLowerHorizonTree)
+import HorizonTree (HorizonTreeNode(HorizonLine), HorizonTree, initUpperHorizonTree, initLowerHorizonTree)
 import Line
 
 -- TODO: Fix -Wall issues. What about -Werror?
@@ -72,7 +69,7 @@ localMinima arrangement = sweep arrangement score selectMinima where
 sweep :: (Cut -> a)
     -> Arrangement
     -> [a]
-sweep arrangement f = []
+sweep _ _ = []
     
 -- TODO: Implement.
 elementaryStep :: Cut -> Cut
