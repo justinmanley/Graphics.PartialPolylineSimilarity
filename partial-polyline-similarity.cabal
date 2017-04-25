@@ -11,15 +11,20 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Align,
-                       TopologicalSweep
+                       TopologicalSweep,
+                       HorizonTree,
+                       Line
   build-depends:       base >=4.8 && <4.9,
+                       containers,
                        Stack
   hs-source-dirs:      src
   default-language:    Haskell2010
+  ghc-options:         -Wall
 
 test-suite pssp-test
   type:                exitcode-stdio-1.0
   build-depends:       base,
+                       containers,
                        HUnit,
                        HUnit-approx,
                        tasty,

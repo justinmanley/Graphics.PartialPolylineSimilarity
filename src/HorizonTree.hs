@@ -4,7 +4,6 @@ import Data.List (sortOn, sortBy, mapAccumR)
 import Data.Ord (Down(..), comparing)
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Maybe (isJust, mapMaybe)
 import Prelude hiding (Either(..))
 
 import Line
@@ -28,6 +27,17 @@ instance Show HorizonTreeNode where
         HorizonLine l -> show l
         NegativeInfinity -> "-∞"
         PositiveInfinity -> "+∞"
+
+instance Ord HorizonTreeNode where
+    compare (HorizonLine l1) (HorizonLine l2) = compare l1 l2
+
+    compare NegativeInfinity NegativeInfinity = EQ
+    compare NegativeInfinity _ = LT
+    compare _ NegativeInfinity = GT
+
+    compare PositiveInfinity PositiveInfinity = EQ
+    compare _ PositiveInfinity = LT
+    compare PositiveInfinity _ = GT
 
 data LineRestriction
     = Segment Double Double
