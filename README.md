@@ -27,6 +27,20 @@ How can I define a measure of similarity between two line segments?
 http://math.stackexchange.com/questions/860503/how-can-i-define-a-measure-of-similarity-between-two-line-segments-in-mathbbr
 http://gis.stackexchange.com/questions/44299/how-to-rank-polylines-according-to-their-similarity-to-a-ref-polyline
 
+Tufts implementation of topological sweep
+http://www.cs.tufts.edu/r/geometry/other/sweep/
+
+Topologically Sweeping an Arrangement (Edelsbrunner & Guibas)
+http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-9.pdf
+
+Guibas handout on topological line sweep:
+http://graphics.stanford.edu/courses/cs368-06-spring/handouts/basic.pdf
+
+Alternative line sweep algorithms:
+
+https://pdfs.semanticscholar.org/a571/cc92218132a1b0e65c2adbf663c79d015737.pdf
+http://www.akira.ruc.dk/~keld/teaching/algoritmedesign_f03/Artikler/12/Chazelle92.pdf
+
 Key words:
 frechet distance
 procrustes analysis
