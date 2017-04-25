@@ -13,12 +13,17 @@ import Line
 
 -- TODO: Fix -Wall issues. What about -Werror?
 
--- Is there a way to reduce the need for one or more of these data structures by cleverly using a map? The trick is that the order in some of these lists matters.
+-- Is there a way to reduce the need for one or more of these data structures by
+-- cleverly using a map? The trick is that the order matters in some of these
+-- lists.
 data Cut = Cut
     { upperHorizonTree :: HorizonTree
     , lowerHorizonTree :: HorizonTree
-    -- If (l1, l2) is in commonRightEndpoints, then l1 and l2 share an endpoint
-    -- in the current cut.
+    -- If (l1, l2) is in commonRightEndpoints, then l1 and l2 share a right
+    -- endpoint in the current cut. Note that each pair will only appear
+    -- once; that is, if l1 and l2 share a common endpoint, only one of (l1, l2)
+    -- and (l2, l1) will appear in this list. The ordering of lines in the
+    -- tuple is not significant.
     , commonRightEndpoints :: [(Line, Line)]
     -- The order of the lines in this list is the order in which the
     -- topological line crosses each cutLine, from y = +∞ to y = -∞.
@@ -63,31 +68,22 @@ localMinima arrangement = sweep arrangement score selectMinima where
         else Nothing
 -}
 
+-- TODO: Implement.
 sweep :: (Cut -> a)
     -> Arrangement
     -> [a]
 sweep arrangement f = []
     
+-- TODO: Implement.
 elementaryStep :: Cut -> Cut
 elementaryStep previousState = previousState
 
+-- The leftmost cut is the initial cut for the topological sweep algorithm.
 leftmostCut :: Arrangement -> Cut
 leftmostCut arrangement = Cut
     { upperHorizonTree = upperHorizonTree
     , lowerHorizonTree = lowerHorizonTree
     , commonRightEndpoints = 
-        -- The problem with this is that the right neighboring line need not be a neighbor in the cut.
-        -- e.g. l1 and l3 in the clockwise example. Right endpoints which are in the cut need to have the property
-        -- that each line appears as the right neighbor of the other in cutNeighbors, not simply that one appears
-        -- as the right neighbor of the other in cutNeighbors.
-        {-
-        Map.foldMapWithKey (zip . repeat)
-            . traceShowId
-            . Map.foldrWithKey invertMap Map.empty
-            -- Note: The right endpoints of cutNeighbors should always be
-            -- finite lines.
-            . Map.mapMaybe (finiteLine . snd) $ cutNeighbors
-        -}
         dups
         . map canonicalize
         . Map.toList
@@ -105,12 +101,12 @@ leftmostCut arrangement = Cut
             Map.unionWithKey (\l -> (minBy (compareIntersections l) `invertibleOn` snd))
                 upperHorizonTree lowerHorizonTree
 
-        -- Assumes that f is invertible; in particular, that for every element
-        -- in the range of f, there is a unique antecedent in the domain.
-        -- See Data.Function.on.
+        -- TODO: Rename.
+        -- This function is like Data.Function.on, but it assumes that range(g(a, b))
+        -- is a subset of {a, b}.
         invertibleOn :: Eq b => (b -> b -> b) -> (a -> b) -> a -> a -> a
         invertibleOn g f x y =
-            if g (f x) (f y) == f x
+            if (f x) `g` (f y) == f x
             then x
             else y
 
@@ -120,6 +116,8 @@ leftmostCut arrangement = Cut
             EQ -> x
             GT -> y
 
+        -- Compare two HorizonTreeNodes by their intersection with a third
+        -- "reference line."
         compareIntersections :: Line -> HorizonTreeNode -> HorizonTreeNode -> Ordering
         compareIntersections l (HorizonLine l1) (HorizonLine l2) =
             compare (lineIntersection l l1) (lineIntersection l l2)
@@ -130,6 +128,7 @@ leftmostCut arrangement = Cut
             HorizonLine l -> Just l
             _ -> Nothing
 
+        -- TODO: Consolidate with invertibleOn?
         canonicalize :: Ord a => (a, a) -> (a, a)
         canonicalize (x, y) = if min x y == x then (x, y) else (y, x)
 
